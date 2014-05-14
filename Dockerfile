@@ -2,8 +2,8 @@ FROM centos
 MAINTAINER Thibaut Lapierre <root@epheo.eu>
 
 #Variables
-ENV NGINX_VERSION 1.7.0 #Nginx version you want to install
-ENV PROXY_REDIRECT_IP 192.168.7.10 #Your Frontend IP
+ENV NGINX_VERSION 1.7.0
+ENV PROXY_REDIRECT_IP 192.168.7.10
 
 #Install dependencies
 RUN yum install -y wget tar pcre pcre-devel openssl-devel gcc unzip
