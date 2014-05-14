@@ -8,14 +8,17 @@ ENV PROXY_REDIRECT_IP 192.168.7.10 #Your Frontend IP
 #Install dependencies
 RUN yum install -y wget tar pcre pcre-devel openssl-devel gcc unzip
 
+WORKDIR /usr/src
+
 # Nginx
-RUN cd /usr/src/ && wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && tar xf nginx-${NGINX_VERSION}.tar.gz && rm -f nginx-${NGINX_VERSION}.tar.gz
+RUN wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && tar xf nginx-${NGINX_VERSION}.tar.gz && rm -f nginx-${NGINX_VERSION}.tar.gz
 
 # Naxsi
-RUN cd /usr/src/ && wget https://github.com/nbs-system/naxsi/archive/master.zip && unzip master.zip && rm master.zip
+RUN wget https://github.com/nbs-system/naxsi/archive/master.zip && unzip master.zip && rm master.zip
 
+WORKDIR /usr/src/nginx-${NGINX_VERSION}
 # Compiling nginx with Naxsi
-RUN cd /usr/src/nginx-${NGINX_VERSION} && ./configure \
+RUN ./configure \
          --conf-path=/etc/nginx/nginx.conf \
          --add-module=../naxsi-master/naxsi_src/ \
          --error-log-path=/var/log/nginx/error.log \
@@ -34,7 +37,7 @@ RUN cd /usr/src/nginx-${NGINX_VERSION} && ./configure \
          --with-http_gzip_static_module \
          --with-ipv6 --prefix=/usr
 
-RUN cd /usr/src/nginx-${NGINX_VERSION} && make && make install
+RUN make && make install
 
 ADD nginx/nginx.conf /etc/nginx/nginx.conf
 ADD nginx/naxsi.rules /etc/nginx/naxsi.rules
