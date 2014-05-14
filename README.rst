@@ -23,3 +23,6 @@ Your redirect IP must be your http Frontend
 
 Example
 ~~~~~~~
+
+You want to run your WAF proxy behind your 10.0.0.1 Frontend IP on port 8081::
+sudo docker run --env PROXY_REDIRECT_IP=10.0.0.1 -p 8081:80 -d epheo/naxsi-proxy-waf
